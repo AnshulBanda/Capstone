@@ -1,0 +1,17 @@
+This txt file is a list of the different reference we have used in order to learn and work on our capstone project.
+
+Github learning:
+- basics of git: https://rowjee.com/blog/git_up_and_running
+- game to learn git branching: https://learngitbranching.js.org/
+- conventional commits: https://www.conventionalcommits.org/en/v1.0.0/
+
+
+
+LLM based content: 
+- video on Chatgpt: https://youtu.be/7xTGNNLPyMI?si=RXOwzS-X4FuikamR
+- RAG: https://github.com/langchain-ai/rag-from-scratch
+- more RAG: https://weaviate.io/blog/introduction-to-rag
+- Optimal Chunking: https://arxiv.org/abs/2505.21700
+- LLM: https://cohere.com/llmu
+- Video on how to use RAG to enable in context learning: https://www.youtube.com/watch?v=qN_2fnOPY-M
+
