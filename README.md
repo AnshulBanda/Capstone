@@ -181,7 +181,7 @@ kafka-console-consumer \
 --bootstrap-server localhost:9092
 ```
 
-## Step 2: Start the Producer
+### Step 2: Start the Producer
 Open a second terminal and start a producer to send data to the same topic.
 
 ```bash
@@ -190,14 +190,14 @@ kafka-console-producer \
 --bootstrap-server localhost:9092
 ```
 
-## Step 3: Exchange Messages
+### Step 3: Exchange Messages
 In the Producer terminal, type a test message and press Enter:
 
 ```bash
 > hello kafka
 ```
 
-## Step 4: Verify Delivery
+### Step 4: Verify Delivery
 Check the Consumer terminal. If the setup is correct, the message should appear instantly:
 
 ```bash
