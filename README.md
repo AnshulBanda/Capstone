@@ -34,25 +34,69 @@ Simulate multiple banks sharing model insights without sharing raw transaction d
 
 ---
 
-## Infrastructure Setup (Kafka & Docker)
-To simulate the bank-to-bank data streaming, follow these steps to configure your environment:
+## Data Streaming 
 
-### Step 1: Install Docker
+## Setup Guide
+
+Follow these steps to configure your environment and install the necessary dependencies for the data streaming pipeline.
+
+### Step 1: System Update and Kafka Installation
+First, ensure your system packages are up to date and download the Kafka binaries.
+
 ```bash
+# Update system packages
 sudo apt update
-sudo apt install docker.io docker-compose -y
-```
 
-Verify with `docker --version` and start the service:
+# Download Kafka 3.7.0
+wget [https://downloads.apache.org/kafka/3.7.0/kafka_2.13-3.7.0.tgz](https://downloads.apache.org/kafka/3.7.0/kafka_2.13-3.7.0.tgz)
+
+# Extract the archive
+tar -xzf kafka_2.13-3.7.0.tgz
+
+# Navigate to the Kafka directory
+cd kafka_2.13-3.7.0
+```
+### Step 2: Containerization Setup
+Install Docker and Docker Compose to manage streaming services.
+
 ```bash
-sudo systemctl start docker && sudo systemctl enable docker
+# Install Docker and Docker Compose
+sudo apt install docker.io docker-compose -y
+
+# Start and enable the Docker service
+sudo systemctl start docker
+sudo systemctl enable docker
 ```
 
-### Step 2: Project Configuration
-1. Create a folder: `mkdir kafka-setup && cd kafka-setup`
-2. Create the config file: `nano docker-compose.yml`
-3. Paste the following (replace `<YOUR_VM_IP>` with the result of `hostname -I`):
-```yaml
+### Step 3: Python Environment
+Install Python and the tools required to manage virtual environments and packages.
+```bash
+# Install Python, venv, and pip
+sudo apt install python3 python3-venv python3-pip -y
+```
+
+## Create Project Folder and Create Project Folder:
+
+Follow these steps to set up the directory structure and the Docker environment for the streaming pipeline.
+
+### Step 1: Create Project Directory
+Create a dedicated folder for the Kafka setup and navigate into it.
+
+```bash
+mkdir kafka-setup
+cd kafka-setup
+```
+### Step 2: Configure Docker Compose
+Create a docker-compose.yml file and define the Zookeeper and Kafka services.
+
+```bash
+# Create and open the file
+nano docker-compose.yml
+```
+
+Paste the following configuration into the file:
+
+```bash
 version: '3'
 
 services:
@@ -62,38 +106,32 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.5.0
     ports:
       - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://<YOUR_VM_IP>:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 ```
 
-### Step 3: Launch & Create Topics
-1. Start Kafka: `docker-compose up -d`
-2. Open the firewall: `sudo ufw allow 9092`
-3. Enter the container: `docker exec -it <kafka_container_name> bash`
-4. Create required topics:
+### Step 3: Launch Services
+Start the containers in detached mode.
+
 ```bash
-kafka-topics --create --topic test-topic --bootstrap-server localhost:9092
-kafka-topics --create --topic bank_1_transactions --bootstrap-server localhost:9092
-kafka-topics --create --topic bank_2_transactions --bootstrap-server localhost:9092
+docker-compose up -d
 ```
 
-### Step 4: Connection Test
-- **Terminal 1 (Consumer):**
+### Step 4: Verify Installation
+Check the status of the running containers to ensure both Zookeeper and Kafka are healthy.
+
 ```bash
-  kafka-console-consumer --topic test-topic --from-beginning --bootstrap-server localhost:9092
+docker ps
 ```
-- **Terminal 2 (Producer):** Enter the container and run:
-```bash
-  kafka-console-producer --topic test-topic --bootstrap-server localhost:9092
-```
-- **Action:** Type a message in Terminal 2 — it should appear in Terminal 1.
+
+
 
 ---
 
