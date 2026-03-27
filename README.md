@@ -121,7 +121,10 @@ services:
 Start the containers in detached mode.
 
 ```bash
-docker-compose up -d
+docker compose up -d
+
+# if you want to stop docker: run this and rerun above command to restart docker
+docker compose down
 ```
 
 ### Step 4: Verify Installation
